@@ -15,7 +15,7 @@ const SplashScreen = () => {
 
     return (
         <View style={styles.container}> {/* Corrección en la sintaxis */}
-            <Text>Loading....</Text>
+            <Text>Bienvenid@s a mi APP....</Text>
             <Image source={require('../../assets/descarga.png')} style={styles.logo} />
         </View>
     );

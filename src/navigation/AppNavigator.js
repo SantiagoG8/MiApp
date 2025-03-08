@@ -4,7 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import SplashScreen from "../screens/SplashScreen";
 import UserScreen from "../screens/UserScreen";
-import Reservas from "../screens/Reservas";
+import Modulos from "../screens/Modulos";
+import Videos from "../screens/Videos";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -21,7 +22,7 @@ const TabNavigator = () => {
                 }} 
             />
             <Tab.Screen 
-                name="User" 
+                name="Usuarios" 
                 component={UserScreen} 
                 options={{ 
                     
@@ -29,13 +30,20 @@ const TabNavigator = () => {
             />
 
             <Tab.Screen 
-                name="Reservas" 
-                component={Reservas} 
+                name="Modulos" 
+                component={Modulos} 
                 options={{ 
                     
                 }}
-             
             />
+            <Tab.Screen 
+                name="Videos" 
+                component={Videos} 
+                options={{ 
+                    
+                }}
+            />
+            
         </Tab.Navigator>
     );
 };

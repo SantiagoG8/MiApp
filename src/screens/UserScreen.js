@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 
 const UserScreen = () => {
   return (
-   <Text>User 😎</Text>
+   <Text>Usuarios inscritos del curso 🌟</Text>
   )
 }
 
