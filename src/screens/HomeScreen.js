@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 
 const HomeScreen = () => {
   return (
-    <Text>HOME 👀</Text>
+    <Text>CURSO DE BARBERIA</Text>
   )
 }
 
