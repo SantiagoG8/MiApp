@@ -1,10 +1,27 @@
-import React from 'react'
-import { Text } from 'react-native'
+import React from 'react';
+import { Text, StyleSheet } from 'react-native';
+import colors from '../Constants/colors';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = () => {
   return (
-    <Text>CURSO DE BARBERIA</Text>
-  )
-}
+    <LinearGradient colors={colors.gradienteSecundario} style={styles.container}>
+      <Text style={styles.text}>CURSO DE BARBERIA</Text>
+    </LinearGradient>
+  );
+};
 
-export default HomeScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+});
+
+export default HomeScreen;
