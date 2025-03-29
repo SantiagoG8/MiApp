@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { auth } from "../services/firebaseConfig";
-import { sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
-import { LinearGradient } from 'expo-linear-gradient';
+import { sendPasswordResetEmail } from "firebase/auth";
+import { LinearGradient } from 'expo-linear-gradient'; 
 
 const UserScreen = ({ navigation }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Usuario autenticado:", user ? user.email : "No hay usuario autenticado");
-      setCurrentUser(user);  
-    });
-    return unsubscribe;  
-  }, []);
 
   const handleChangePassword = async () => {
-    if (currentUser?.email) {
+    const email = auth.currentUser?.email;
+
+    if (email) {
       try {
-        await sendPasswordResetEmail(auth, currentUser.email);
+        await sendPasswordResetEmail(auth, email);
         Alert.alert(
           "Cambio de contraseña",
-          `Se ha enviado un enlace de restablecimiento de contraseña a: ${currentUser.email}`
+          `Se ha enviado un enlace de restablecimiento de contraseña a: ${email}`
         );
       } catch (error) {
         console.error("Error al enviar el correo de cambio de contraseña:", error);
@@ -45,13 +37,13 @@ const UserScreen = ({ navigation }) => {
   };
 
   const handleViewInfo = () => {
-    if (currentUser) {
+    const user = auth.currentUser;
+    if (user) {
       Alert.alert(
         "Información del Usuario",
-        `Correo: ${currentUser.email}\nUID: ${currentUser.uid}`
+        `Correo: ${user.email}\nUID: ${user.uid}`
       );
     } else {
-      console.warn("No hay usuario autenticado");
       Alert.alert("Error", "No hay información de usuario disponible.");
     }
   };
@@ -59,7 +51,12 @@ const UserScreen = ({ navigation }) => {
   return (
     <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.container}>
       <Text style={styles.title}>Mi Cuenta</Text>
+
       <Text style={styles.text}>Aquí puedes gestionar tu cuenta</Text>
+      
+      <TouchableOpacity style={[styles.button, styles.infoButton]} onPress={handleViewInfo}>
+        <Text style={styles.buttonText}>Ver Información</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
         <Text style={styles.buttonText}>Cambiar Clave</Text>
@@ -69,9 +66,6 @@ const UserScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.infoButton]} onPress={handleViewInfo}>
-        <Text style={styles.buttonText}>Ver Información</Text>
-      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -79,9 +73,9 @@ const UserScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start',  // Todo se alinea hacia la parte superior
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 50,  // Ajustar el espacio superior según tus necesidades
     paddingHorizontal: 20,
   },
   title: {

@@ -16,8 +16,11 @@ const SplashScreen = () => {
     }, [navigation]);
 
     return (
-        <LinearGradient colors={colors.gradientePrimario} style={styles.container}> {/* Corrección en la sintaxis */}
-            <Text style={styles.text}>💈BIENVENIDOS A MI APP CURSO DE BARBERIA💈</Text>
+        <LinearGradient 
+            colors={colors.gradientePrimario || ['#4c669f', '#3b5998', '#192f6a']} 
+            style={styles.container}
+        >
+            <Text style={styles.text}>💈 BIENVENIDOS A MI APP CURSO DE BARBERÍA 💈</Text>
             <Image source={require('../../assets/descarga.png')} style={styles.logo} />
         </LinearGradient>
     );
@@ -34,11 +37,11 @@ const styles = StyleSheet.create({
         height: 300, 
     },
     text: {
-        color: colors. default,
-        frontSize: 20,
-        frontWeight: 'bold',
+        color: '#fff',  
+        fontSize: 20,   
+        fontWeight: 'bold',  
         marginBottom: 20,
-
+        textAlign: 'center',  
     }
 });
 
