@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState({ email: '', password: '' });
 
-    // Función para validar email
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
@@ -29,54 +28,66 @@ const LoginScreen = ({ navigation }) => {
         setError(errors);
 
         if (isValid) {
-            console.log("Login successful!");
-            navigation.navigate("MainTabs");  // Cambia a la pantalla principal si los datos son válidos
+            console.log("Login exitoso!");
+            navigation.navigate("MainTabs");  
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Bienvenidos!</Text>
+        <ImageBackground 
+            source={require("../../../assets/138.png")}  
+            style={styles.background}
+        >
+            <View style={styles.overlay}>
+                <Text style={styles.title}>Bienvenidos!</Text>
 
-            <TextInput
-                style={[styles.input, error.email ? styles.inputError : null]}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
-            {error.email ? <Text style={styles.errorText}>{error.email}</Text> : null}
+                <TextInput
+                    style={[styles.input, error.email ? styles.inputError : null]}
+                    placeholder="Email"
+                    placeholderTextColor="#aaa"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+                {error.email ? <Text style={styles.errorText}>{error.email}</Text> : null}
 
-            <TextInput
-                style={[styles.input, error.password ? styles.inputError : null]}
-                placeholder="Password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-            />
-            {error.password ? <Text style={styles.errorText}>{error.password}</Text> : null}
+                <TextInput
+                    style={[styles.input, error.password ? styles.inputError : null]}
+                    placeholder="Password"
+                    placeholderTextColor="#aaa"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                />
+                {error.password ? <Text style={styles.errorText}>{error.password}</Text> : null}
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Log In</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Log In</Text>
+                </TouchableOpacity>
 
-            {/* Línea de redirección a Registro */}
-            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-                <Text style={styles.linkText}>¿No tienes una cuenta? Regístrate aquí</Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+                    <Text style={styles.linkText}>¿No tienes una cuenta? Regístrate aquí</Text>
+                </TouchableOpacity>
+            </View>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    background: {
+        flex: 1,
+        resizeMode: 'cover',  
+    },
+    overlay: {
         flex: 1,
         justifyContent: 'center',
         paddingHorizontal: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',  
     },
     title: {
         fontSize: 26,
         fontWeight: 'bold',
         marginBottom: 20,
+        color: '#fff',  
     },
     input: {
         width: '100%',
@@ -86,6 +97,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginBottom: 5,
         borderRadius: 8,
+        backgroundColor: '#fff',  
     },
     inputError: {
         borderColor: 'red',
@@ -108,7 +120,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     linkText: {
-        color: '#0077B6',
+        color: '#39dd9a',
         marginTop: 10,
         textAlign: 'center',
         fontSize: 16,

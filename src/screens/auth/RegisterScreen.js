@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../services/firebaseConfig"; 
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
 
 const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -12,6 +12,11 @@ const RegisterScreen = ({ navigation }) => {
     const [error, setError] = useState('');
 
     const handleRegister = async () => {
+        if (!name || !email || !password || !confirmPassword) {
+            setError("Por favor, completa todos los campos.");
+            return;
+        }
+
         if (password !== confirmPassword) {
             setError("Las contraseñas no coinciden.");
             return;
@@ -21,18 +26,34 @@ const RegisterScreen = ({ navigation }) => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            
             await setDoc(doc(db, "usuarios", user.uid), {
                 name: name,
                 email: email,
                 createdAt: new Date(),
             });
 
-            console.log("Usuario registrado y almacenado en Firestore.");
-            navigation.navigate("Login"); 
+          
+            Alert.alert(
+                "Registro exitoso",  
+                "Tu cuenta ha sido creada correctamente.",
+                [{ text: "OK", onPress: () => navigation.navigate("Login") }]  
+            );
+
         } catch (error) {
             console.error("Error al registrar usuario:", error.message);
-            setError("Error al registrar. Por favor, verifica los datos.");
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    setError("El correo ya está registrado.");
+                    break;
+                case 'auth/invalid-email':
+                    setError("Correo electrónico no válido.");
+                    break;
+                case 'auth/weak-password':
+                    setError("La contraseña debe tener al menos 6 caracteres.");
+                    break;
+                default:
+                    setError("Error al registrar. Por favor, verifica los datos.");
+            }
         }
     };
 
